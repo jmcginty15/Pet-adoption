@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ pet.name }} Details{% endblock %}
+
+{% block content %}
+<div class="card" style="width: 1000px;" id="pet-container">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <img src="{{ pet.photo_url }}" class="card-img" alt="{{ pet.name }}-the-{{ pet.species }}">
+        </div>
+        <div class="col-md-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ pet.name }}<br>
+                    <small class="card-text text-muted"><b>Species:</b> {{ pet.species }}</small><br>
+                    <small class="card-text text-muted"><b>Age:</b>
+                        {% if pet.age %}{{ pet.age }}{% else %}Unavailable{% endif %}</small></h5>
+                {% for msg in get_flashed_messages() %}
+                <div class="alert alert-success" role="alert" id="home-flash">{{ msg }}</div>
+                {% endfor %}
+                <h6 class="card-title">Notes:</h6>
+                <p class="card-text">{{ pet.notes }}</p>
+                {% if pet.available %}
+                <p class="card-text"><b>Available for adoption!</b></p>
+                {% else %}
+                <p class="card-text"><b>Adopted!</b></p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card-body">
+                <h5 class="card-title">Edit Details:</h5>
+                <form action="/{{ pet.id }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    {{ form.name(class_="hidden") }}
+                    {{ form.species(class_="hidden") }}
+                    {{ form.age(class_="hidden") }}
+                    <div class="form-group">
+                        {{ form.photo_url.label }} {% if form.photo_url.flags.required %}
+                        <b class="asterisk">*</b>{% endif %}
+                        {{ form.photo_url(class_="form-control") }}
+                        {% for err in form.photo_url.errors %}
+                        <small class="form-text text-muted">{{ err }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.notes.label }} {% if form.notes.flags.required %}<b class="asterisk">*</b>{% endif %}
+                        {{ form.notes(class_="form-control") }}
+                        {% for err in form.notes.errors %}
+                        <small class="form-text text-muted">{{ err }}</small>{% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.available }} {{ form.available.label }}
+                        {% for err in form.available.errors %}
+                        <small class="form-text text-muted">{{ err }}</small>{% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/" class="btn btn-danger">Back to Home</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -7,10 +7,14 @@
     padding-bottom: 15px;
 }
 
-#new-button {
+.asterisk {
+    color: red;
+}
+
+#pet-container, #form-container, .home-button {
     margin: 15px;
 }
 
-.asterisk {
-    color: red;
+.hidden {
+    display: none;
 }

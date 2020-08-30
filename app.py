@@ -22,6 +22,15 @@ def home():
     pets = Pet.query.all()
     return render_template('home.html', pets=pets)
 
+@app.route('/<group>')
+def show_groups(group):
+    """Show pets by group, either available or not available"""
+    if group == 'available':
+        pets = Pet.query.filter_by(available=True).all()
+    elif group == 'not-available':
+        pets = Pet.query.filter_by(available=False).all()
+    return render_template('home.html', pets=pets)
+
 @app.route('/add', methods=['GET', 'POST'])
 def add_pet_form():
     """Form for adding new pet"""
@@ -42,3 +51,18 @@ def add_pet_form():
         return redirect('/')
     else:
         return render_template('pet-form.html', form=form)
+
+@app.route('/<int:pet_id>', methods=['GET', 'POST'])
+def pet_details(pet_id):
+    """Display pet details and edit form"""
+    pet = Pet.query.get(pet_id)
+    form = AddPetForm(obj=pet)
+    if form.validate_on_submit():
+        pet.photo_url = form.photo_url.data
+        pet.notes = form.notes.data
+        pet.available = form.available.data
+        db.session.commit()
+        flash(f'{pet.name} updated!')
+        return redirect(f'/{pet_id}')
+    else:
+        return render_template('pet-details.html', pet=pet, form=form)
