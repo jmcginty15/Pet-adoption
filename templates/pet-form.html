@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Pet{% endblock %}
+
+{% block content %}
+<div>
+    <div class="card" style="width: 600px;" id="form-container">
+        <div class="card-body">
+            <h3 class="card-title">Add a new Pet:</h3>
+            <h6 class="asterisk">* denotes required fields</h6>
+        </div>
+        <form action="/add" method="POST" class="card-body">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.widget.input_type != 'hidden' %}
+            <div class="form-group">
+                {{ field.label }} {% if field.flags.required %}<b class="asterisk">*</b>{% endif %}
+                {{ field(class_="form-control") }}
+                {% for err in field.errors %}<small class="form-text text-muted">{{ err }}</small>{% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

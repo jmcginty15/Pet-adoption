@@ -1,0 +1,16 @@
+.cancel-margin {
+    margin: 0;
+}
+
+.add-padding {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#new-button {
+    margin: 15px;
+}
+
+.asterisk {
+    color: red;
+}

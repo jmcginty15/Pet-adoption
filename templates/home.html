@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Adopt Home{% endblock %}
+
+{% block content %}
+{% for msg in get_flashed_messages() %}
+<div class="alert alert-success" role="alert" id="home-flash">{{ msg }}</div>
+{% endfor %}
+<div class="row cancel-margin">
+    {% for pet in pets %}
+    <div class="col-md-3 d-flex justify-content-center add-padding">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ pet.photo_url }}" class="card-img-top" alt="{{ pet.name }}-the-{{ pet.species }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ pet.name }}</h5>
+                <p class="card-text">{{ pet.notes }}</p>
+                {% if pet.available %}
+                <p class="card-text"><b>Available for adoption!</b></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<a href="/add" class="btn btn-primary" id="new-button">Add a new pet</a>
+{% endblock %}
